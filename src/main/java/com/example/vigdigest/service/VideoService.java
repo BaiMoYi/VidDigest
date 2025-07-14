@@ -1,20 +1,32 @@
 package com.example.vigdigest.service;
 
+import com.example.vigdigest.pipeline.VideoContext;
+import com.example.vigdigest.pipeline.VideoPipeline;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 
 /**
- * Handles video processing such as extracting audio and frames.
+ * High level service for video processing workflow.
  */
+@Service
 public class VideoService {
 
+    private final VideoPipeline pipeline;
+
+    public VideoService(VideoPipeline pipeline) {
+        this.pipeline = pipeline;
+    }
+
     /**
-     * Extracts text from video. Placeholder implementation.
+     * Process given video file through pipeline.
      *
      * @param file video file
-     * @return transcribed text
+     * @return context with aggregated results
      */
-    public String transcribe(File file) {
-        // TODO: integrate real transcription logic
-        return "";
+    public Mono<VideoContext> handle(File file) {
+        VideoContext ctx = new VideoContext().file(file);
+        return pipeline.process(ctx);
     }
 }

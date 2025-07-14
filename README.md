@@ -19,3 +19,16 @@ VidDigest integrates Google Gemini 2.5 Pro with Spring Boot to analyze videos an
 ```
 
 After startup, visit `http://localhost:8080/swagger-ui.html` to try the API.
+The OpenAPI specification is available at `api/openapi.yaml` and includes API Key security scheme examples.
+
+## Plugin Management
+
+Plugins packaged as JARs can be loaded or unloaded at runtime using the `/api/v1/plugins` endpoints. Example:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/plugins/load?path=/path/to/plugin.jar" -H 'X-API-KEY: YOUR_KEY'
+```
+
+Loaded plugins expose metrics under the `plugin.process.time` Prometheus metric and are included in the health endpoint.
+
+See `QUICKSTART.md` for more instructions.

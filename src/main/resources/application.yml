@@ -1,0 +1,14 @@
+spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+  vault:
+    uri: ${VAULT_URI:http://localhost:8200}
+    token: ${VAULT_TOKEN:}
+  application:
+    name: vigdigest
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
