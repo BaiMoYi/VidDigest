@@ -1,0 +1,14 @@
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <property name="LOG_FILE" value="${LOG_FILE:-vigdigest.log}"/>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>${LOG_FILE}</file>
+    <encoder>
+      <pattern>%d %-5level [%thread] %logger - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

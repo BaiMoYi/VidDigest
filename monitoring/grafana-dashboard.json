@@ -1,0 +1,14 @@
+{
+  "dashboard": {
+    "title": "VidDigest",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Plugin process time",
+        "targets": [{
+          "expr": "plugin_process_time_seconds"}],
+        "id": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+route:
+  receiver: team
+receivers:
+  - name: team
+    email_configs:
+      - to: alerts@example.com
+        send_resolved: true

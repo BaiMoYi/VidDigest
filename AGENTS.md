@@ -167,3 +167,17 @@
 > **YAGNI：** 不做未用的设计。
 
 **以规划优先为核心，以安全可靠为底线，以可维护可扩展为目标。**
+
+---
+
+## 插件与监控概览
+
+- **插件在线热更新**：通过 REST 接口加载或卸载 JAR 包，`PluginManager` 负责管理生命周期。
+- **健康检查**：`PluginHealthIndicator` 汇总插件状态，暴露在 `/actuator/health`。
+- **Prometheus 指标**：`PluginMetrics` 记录各插件处理时延，统一在 `/actuator/prometheus` 输出。
+
+### Agent 职责说明
+
+- **VideoServiceAgent**：输入视频文件路径，输出处理后的 `VideoContext`，可配置并发度和重试次数。
+- **ChatServiceAgent**：输入文本提示，输出 Gemini 响应结果，依赖 `GEMINI_API_KEY`。
+- **PluginManagerAgent**：输入插件 JAR 路径或名称，完成加载、卸载、列表操作，指标和健康检查自动更新。
