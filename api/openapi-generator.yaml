@@ -1,0 +1,6 @@
+generatorName: typescript-fetch
+inputSpec: openapi.yaml
+outputDir: ../ts-client
+additionalProperties:
+  npmName: "@vigdigest/client"
+  supportsES6: true

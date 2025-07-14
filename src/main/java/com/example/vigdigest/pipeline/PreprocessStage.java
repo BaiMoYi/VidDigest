@@ -4,6 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
+import java.util.concurrent.Semaphore;
 
 /**
  * Example preprocess stage.
@@ -11,6 +16,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class PreprocessStage implements ProcessingStage {
     private static final Logger log = LoggerFactory.getLogger(PreprocessStage.class);
+    private final Semaphore semaphore = new Semaphore(2);
 
     @Override
     public String name() {
@@ -20,9 +26,15 @@ public class PreprocessStage implements ProcessingStage {
     @Override
     public Mono<VideoContext> handle(VideoContext ctx) {
         return Mono.fromCallable(() -> {
-            log.info("preprocess video {}", ctx.file());
-            // TODO: real preprocess logic
-            return ctx;
-        });
+            semaphore.acquire();
+            try {
+                log.info("preprocess video {}", ctx.file());
+                // TODO: real preprocess logic
+                return ctx;
+            } finally {
+                semaphore.release();
+            }
+        }).subscribeOn(Schedulers.boundedElastic())
+          .retryWhen(Retry.backoff(2, Duration.ofSeconds(1)));
     }
 }
